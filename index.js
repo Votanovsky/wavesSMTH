@@ -14,14 +14,13 @@ import { DotScreenShader } from './node_modules/three/examples/jsm/shaders/DotSc
 import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js'
 
 
-import t1 from './assets/asset1.jpg'
-import t2 from './assets/asset2.jpeg'
-import t3 from './assets/asset3.jpg'
+import t1 from './assets/v.jpeg'
+import t2 from './assets/r.jpg'
+import t3 from './assets/t.jpg'
 //import t4 from './assets/asset4.jpg'
 //import t5 from './assets/asset5.jpg'
 //import t6 from './assets/asset6.jpg'
-
-
+ 
 const Z_START = 2
 export default class Workspace
 {
@@ -41,7 +40,7 @@ export default class Workspace
         this.renderer = new THREE.WebGLRenderer()
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         this.renderer.setSize(this.width, this.height)
-        this.renderer.setClearColor(0xeeeeee, 1)
+        this.renderer.setClearColor(0xffffff, 1)
         this.renderer.physicallyCorrectLights = true
         this.renderer.outputEncoding = THREE.sRGBEncoding
 
@@ -57,6 +56,8 @@ export default class Workspace
         this.renderer.render(this.scene, this.camera)
         this.render()
         this.settings()
+        this.resize()
+        this.setupResize()
     }
     initPost()
     {
@@ -81,6 +82,19 @@ export default class Workspace
         requestAnimationFrame(this.render.bind(this))
         //this.renderer.render(this.scene, this.camera)
         this.composer.render()
+    }
+
+    setupResize() {
+        window.addEventListener('resize', this.resize.bind(this))
+    }
+
+    resize() {
+        this.width = this.container.offsetWidth
+        this.height = this.container.offsetHeight
+        this.render.setSize(this.width, this.height)
+        this.camera.aspect = this.width / this.height
+
+        this.camera.updateProjectionMatrix()
     }
 
     settings() {
@@ -111,17 +125,18 @@ export default class Workspace
             fragmentShader: fragment
         })
 
-        this.geometry = new THREE.PlaneGeometry(1.9/2, 1/2, 1, 1)
+        this.geometry = new THREE.PlaneGeometry(3/2, 1.7/2, 1, 1)
+
         this.meshes = []
 
         this.textures.forEach( (texture, index) => {
             let m = this.material.clone()
-            m.uniforms.uTexture = texture
+            m.uniforms.uTexture.value = texture
             let obj = new THREE.Mesh(this.geometry, m)
             this.scene.add(obj)
             this.meshes.push(obj)
             //obj.position.y = Math.round((7 - index) / 3) * .8 - Math.round((index - 1) / 3) - .8
-            obj.position.x = index - 1 //(index % 3) * 3 - 3
+            obj.position.x = index - 1  //(index % 3) * 3 - 3
             obj.position.y = -1
             obj.rotation.z = Math.PI/2
         })
