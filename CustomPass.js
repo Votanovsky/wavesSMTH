@@ -14,7 +14,7 @@ const CustomPass = {
 
 		'tDiffuse': { value: null },
 		'time': { value: 0 },
-		'scale': { value: 1. },
+		'scale': { value: 1 },
 		'progress': { value: 0 },
 		'tSize': { value: new Vector2( 256, 256 ) },
 		'center': { value: new Vector2( 0.5, 0.5 ) },
@@ -78,3 +78,8 @@ const CustomPass = {
 };
 
 export { CustomPass };
+// this.meshes.forEach((m,i)=> {
+// 	m.position.y = -this.settings.progress
+// })
+// obj.position.x =  (index % 2) * 2 - 0.9
+//             obj.position.y = -1

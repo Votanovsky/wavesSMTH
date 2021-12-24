@@ -47,7 +47,7 @@ export default class Workspace
         this.controls = new OrbitControls( this.camera, this.renderer.domElement )
 
         this.container.appendChild( this.renderer.domElement )
-        this.urls = [t1, t2, t3]//, t4, t5, t6]
+        this.urls = [t2, t3]//, t4, t5, t6]
         this.textures = this.urls.map(url => new THREE.TextureLoader().load(url) )
         console.log(this.textures)
         this.camera.position.z = Z_START
@@ -82,6 +82,11 @@ export default class Workspace
         requestAnimationFrame(this.render.bind(this))
         //this.renderer.render(this.scene, this.camera)
         this.composer.render()
+
+        this.meshes.forEach((m,i)=> {
+            m.position.y = -this.settings.progress
+            m.rotation.z = this.settings.progress*Math.PI/2
+        })
     }
 
     setupResize() {
@@ -101,7 +106,7 @@ export default class Workspace
         this.settings = {
             progress: 0,
             scale: 1,
-            position: Z_START
+            position: Z_START -0.6
         }
         this.gui = new dat.GUI()
         this.gui.add(this.settings, "progress", 0, 1, .01)
@@ -137,8 +142,8 @@ export default class Workspace
             this.meshes.push(obj)
             //obj.position.y = Math.round((7 - index) / 3) * .8 - Math.round((index - 1) / 3) - .8
             obj.position.x = index - 1  //(index % 3) * 3 - 3
-            obj.position.y = -1
-            obj.rotation.z = Math.PI/2
+            obj.position.x =  (index % 2) * 2 - 0.9
+            // obj.rotation.z = Math.PI/2
         })
     }
 }
